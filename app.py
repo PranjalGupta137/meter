@@ -1,12 +1,19 @@
-# Simple Meter Bill Prediction (No ML library)
+import pickle
+import numpy as np
 
-print("⚡ Simple Meter System")
+print("⚡ Smart Meter ML System")
 
-# Take input
+# Load trained ML model
+with open("meter_model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+# Take user input
 units = float(input("Enter electricity units: "))
 
-# Simple logic (₹5 per unit)
-rate_per_unit = 5
-bill = units * rate_per_unit
+# Convert input for ML model
+units_array = np.array([[units]])
 
-print("Estimated Bill Amount: ₹", int(bill))
+# Predict bill
+predicted_bill = model.predict(units_array)
+
+print("Estimated Bill Amount: ₹", int(predicted_bill[0]))
