@@ -1,19 +1,23 @@
 import pickle
 import numpy as np
+import os
 
 print("⚡ Smart Meter ML System")
 
-# Load trained ML model
-with open("meter_model.pkl", "rb") as f:
+# Check model file
+model_path = "meter_model.pkl"
+
+if not os.path.exists(model_path):
+    print("❌ ERROR: meter_model.pkl file not found")
+    exit()
+
+# Load model safely
+with open(model_path, "rb") as f:
     model = pickle.load(f)
 
-# Take user input
 units = float(input("Enter electricity units: "))
 
-# Convert input for ML model
 units_array = np.array([[units]])
+prediction = model.predict(units_array)
 
-# Predict bill
-predicted_bill = model.predict(units_array)
-
-print("Estimated Bill Amount: ₹", int(predicted_bill[0]))
+print("Estimated Bill Amount: ₹", int(prediction[0]))
